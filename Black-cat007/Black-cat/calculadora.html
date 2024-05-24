@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crypto Converter</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+  
+  <style>
+    body {
+      background-image: url('galaxy.jpg');
+      background-size: 1400px 1400px;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 500px;
+      background-color: rgba(255, 255, 255, 0.774);
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .title {
+      color: #71528b;
+    }
+
+    #conversionResult {
+      margin-top: 1rem;
+      padding: 1rem;
+      background-color: #343a40;
+      border: 1px solid #495057;
+      border-radius: 0.45rem;
+      color: white;
+    }
+
+    #conversionResult img {
+            width: 30px; /* Defina a largura desejada para o ícone */
+            height: auto; /* Deixe a altura para ser ajustada automaticamente para manter a proporção */
+            margin-right: 10px; /* Adiciona um espaçamento à direita do ícone */
+        }
+
+        #iconAndResult {
+  display: flex;
+  align-items: center;
+}
+
+#iconDiv {
+  margin-right: 10px; /* Ajuste o espaçamento conforme necessário */
+}
+
+.btn {
+    background-color: #301349;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #11011f;
+}
+
+/* Remover cor azul durante o estado de foco e estado ativo */
+.btn:focus,
+.btn:active {
+    outline: none;
+    background-color: #301349; /* ou a cor desejada */
+}
+
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 class="title">CONVERSION CALCULATOR</h2>
+    <div class="form-group">
+      <label for="currency">Selecione a Moeda:</label>
+      <select class="form-control" id="currency" onchange="convert()">
+        <option value="usd">USD</option>
+        <option value="brl">BRL</option>
+      </select>
+      
+    </div>
+    <div class="form-group">
+      <label for="bnb">
+        <img src="icons8-binance-64.png" alt="BNB" style="width: 20px; height: 20px; margin-right: 5px;">
+        BNB:
+      </label>
+      <input type="number" class="form-control" id="bnb" placeholder="Insira o valor do BNB" oninput="convert('bnb')">
+    </div>
+    <div class="form-group">
+      <label for="polygon">
+        <img src="icons8-polígono-64.png" alt="Polygon" style="width: 20px; height: 20px; margin-right: 5px;">
+        Polygon (MATIC):
+      </label>
+      <input type="number" class="form-control" id="polygon" placeholder="Insira o valor do polygon" oninput="convert('polygon')">
+    </div>
+    <div class="form-group">
+      <label for="usdt">
+        <img src="icons8-tether-50.png" alt="USDT" style="width: 20px; height: 20px; margin-right: 5px;">
+        USDT (TETHER):
+      </label>
+      <input type="number" class="form-control" id="usdt" placeholder="Insira o valor em USDT" oninput="convert('usdt')">
+    </div>
+    <div id="conversionResult">
+      <div id="iconAndResult" class="d-flex align-items-center">
+        <div id="iconDiv">
+          <img src="Moeda---black-cat.png" alt="Ícone">
+        </div>
+        <span id="resultText"></span>
+      </div>
+    </div>
+    <button onclick="window.location.href='web.html'" class="btn btn-primary mt-3">Voltar</button>
+    
+  </div>
+  </div>
+
+  <script>
+    function convert(cryptoType) {
+      const currency = document.getElementById('currency').value;
+      const bnbInput = document.getElementById('bnb');
+      const polygonInput = document.getElementById('polygon');
+      const usdtInput = document.getElementById('usdt');
+
+      const bnbAmount = parseFloat(bnbInput.value) || 0;
+      const polygonAmount = parseFloat(polygonInput.value) || 0;
+      const usdtAmount = parseFloat(usdtInput.value) || 0;
+
+      const memeCoinValueUSD = 0.00025; // Valor da Meme Coin Black Cat em dólares
+      const memeCoinValueBRL = 0.0013; // Valor da Meme Coin Black Cat em reais
+      const bnbValueUSD = 575; // Valor do BNB em dólares
+      const polygonValueUSD = 0.70; // Valor do Polygon em dólares
+      const usdtValueUSD = 1.00; // Valor do USDT em dólares
+      const bnbValueBRL = 2935.14; // Valor do BNB em reais
+      const polygonValueBRL = 3.50; // Valor do Polygon em reais
+      const usdtValueBRL = 5.00; // Valor do USDT em reais
+
+      let memeCoinValue, bnbValue, polygonValue, usdtValue;
+
+      if (currency === 'usd') {
+        memeCoinValue = memeCoinValueUSD;
+        bnbValue = bnbValueUSD;
+        polygonValue = polygonValueUSD;
+        usdtValue = usdtValueUSD;
+      } else if (currency === 'brl') {
+        memeCoinValue = memeCoinValueBRL;
+        bnbValue = bnbValueBRL;
+        polygonValue = polygonValueBRL;
+        usdtValue = usdtValueBRL;
+      }
+
+      let resultText = '';
+
+      // Limpar os campos de entrada que não estão em uso
+if (cryptoType === 'bnb') {
+  polygonInput.value = '';
+  usdtInput.value = '';
+  if (bnbAmount > 0) {
+    const memeCoinFromBNB = (bnbAmount * bnbValue / memeCoinValue).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    resultText = `${bnbAmount} BNB = ${memeCoinFromBNB} BLKCT`;
+  }
+} else if (cryptoType === 'polygon') {
+  bnbInput.value = '';
+  usdtInput.value = '';
+  if (polygonAmount > 0) {
+    const memeCoinFromPolygon = (polygonAmount * polygonValue / memeCoinValue).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    resultText = `${polygonAmount} Polygon (MATIC) = ${memeCoinFromPolygon} BLKCT`;
+  }
+} else if (cryptoType === 'usdt') {
+  bnbInput.value = '';
+  polygonInput.value = '';
+  if (usdtAmount > 0) {
+    const memeCoinFromUSDT = (usdtAmount * usdtValue / memeCoinValue).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    resultText = `${usdtAmount} USDT (TETHER) = ${memeCoinFromUSDT} BLKCT`;
+  }
+} else if (bnbAmount === 0 && polygonAmount === 0 && usdtAmount === 0) {
+  // Não altere o resultado ou o ícone se todos os campos estiverem vazios
+  return;
+}
+
+document.getElementById('resultText').innerText = resultText;
+    }
+  </script>
+</body>
+</html>
