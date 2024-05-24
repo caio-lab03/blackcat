@@ -1,1 +1,1 @@
-# blackcat
+# blackcat.coin
